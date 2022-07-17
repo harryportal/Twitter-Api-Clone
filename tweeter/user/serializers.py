@@ -2,6 +2,8 @@ from djoser.serializers import UserCreateSerializer as BaseUserSerializer, UserS
 from rest_framework import serializers
 from .models import User
 from django.db import IntegrityError
+from django.db.models import Count
+
 
 class UserCreateSerializer(BaseUserSerializer):
     confirm_password = serializers.CharField(max_length=25, write_only=True)
@@ -28,16 +30,32 @@ class UserCreateSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         model = User
-        fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password', 'phone', 'date_of_birth']
+        fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password',
+                  'phone', 'date_of_birth']
 
 class CurrentUserSerializer(UserSerializer):
     fullname = serializers.SerializerMethodField()
+    date_joined = serializers.SerializerMethodField()
+    followers = serializers.SerializerMethodField()
+    following = serializers.SerializerMethodField()
+
 
     def get_fullname(self, user: User):
         return user.get_full_name()
 
+    def get_date_joined(self, user: User):
+        return user.date_joined.strftime("%b-%y")
+
+    def get_followers(self, user: User):
+        followers = user.followers.count()
+        return followers
+
+    def get_following(self, user: User):
+        following = user.following.count()
+        return following
+
     class Meta(UserSerializer.Meta):
-        fields = ['fullname','username','email']
+        fields = ['fullname','username','email','bio','location', 'website','date_joined','followers','following']
 
 
 
