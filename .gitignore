@@ -1,7 +1,2 @@
-/venv
-/*.pyc
-/tweeter/*.pyc
-.idea/
-/tweeter/tweeter/*.pyc
-/tweeter/tweeter_api/*.pyc
+venv
 tweeter/*.pyc
