@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-admin.site.site_header = 'Tweeter Clone API Admin Backend'
-admin.site.index_title = 'tweeter api!'
+
+admin.site.site_header = 'Twitter Clone API Admin Backend'
+admin.site.index_title = 'twitter api!'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt'))
-]
+    path('api/v1/users/', include('user.urls',  namespace='user'))
+   ]
+
+
