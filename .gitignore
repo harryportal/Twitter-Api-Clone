@@ -1,2 +1,4 @@
-venv
-tweeter/*.pyc
+/venv
+*.pyc
+tweeter/user/__pycache__/
+.idea/

@@ -22,7 +22,8 @@ admin.site.index_title = 'twitter api!'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/users/', include('user.urls',  namespace='user'))
+    path('api/v1/users/', include('user.urls',  namespace='user')),
+    path('api/v1/tweets/', include('tweeter_api.urls', namespace='tweets'))
    ]
 
 

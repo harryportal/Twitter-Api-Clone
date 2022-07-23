@@ -33,6 +33,18 @@ class UserCreateSerializer(BaseUserSerializer):
         fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password',
                   'phone', 'date_of_birth']
 
+class TweetsUserSerializer(serializers.ModelSerializer):
+    """ to be used for displaying the tweets and user profile """
+    fullname = serializers.SerializerMethodField()
+
+    def get_fullname(self, user: User):
+        return user.get_full_name()
+
+    class Meta:
+        model = User
+        fields = ['username','profile_picture','fullname']
+
+
 class CurrentUserSerializer(UserSerializer):
     fullname = serializers.SerializerMethodField()
     date_joined = serializers.SerializerMethodField()
