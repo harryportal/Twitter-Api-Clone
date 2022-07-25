@@ -42,7 +42,7 @@ class TweetsUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username','profile_picture','fullname']
+        fields = ['username','profile_picture','fullname','bio']
 
 
 class CurrentUserSerializer(UserSerializer):

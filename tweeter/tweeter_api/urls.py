@@ -5,9 +5,13 @@ from django.urls import path,include
 app_name = 'tweets'
 
 router = routers.DefaultRouter() # using default routers provides a base url
-router.register('tweet', views.UserTweetsViewSet, basename='tweet')
+router.register('tweets', views.UserTweetsViewSet, basename='tweet')
+
+tweet_router = routers.NestedSimpleRouter(router, 'tweets', lookup='tweet')
+tweet_router.register('retweets', views.RetweetsViewSet, basename='tweet_retweets')
 
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('',include(tweet_router.urls))
 ]

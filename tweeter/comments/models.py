@@ -10,4 +10,6 @@ class Comment(models.Model):
     tweet = models.ForeignKey(Tweet, related_name='comments', on_delete=models.CASCADE)
     content = models.CharField(max_length=350)
     likes = models.ManyToManyField(User, related_name='comments_likes')
+    comments = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+    retweets = models.ManyToManyField('self')
     created_at = models.DateTimeField(auto_now_add=True)
