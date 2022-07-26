@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Tweet
 from tweeter.utils import format_date_created
-from user.serializers import TweetsUserSerializer
+from user.serializers import BaseUserSerializer
 from comments.serializers import ViewCommentSerializer
-from user.serializers import TweetsUserSerializer
+
 
 class CreateTweetSerializer(serializers.ModelSerializer):
     content = serializers.CharField(max_length=400, required=False)
@@ -43,7 +43,7 @@ class UserTweetsSerializer(serializers.ModelSerializer):
                   'comments_count','retweets_count']
 
 class ReTweetsSerializer(serializers.ModelSerializer):
-    retweets = TweetsUserSerializer(many=True)
+    retweets = BaseUserSerializer(many=True)
 
     class Meta:
         model = Tweet

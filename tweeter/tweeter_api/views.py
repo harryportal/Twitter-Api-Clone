@@ -28,13 +28,17 @@ class UserTweetsViewSet(CreateModelMixin,ListModelMixin,RetrieveModelMixin, Gene
 
 class RetweetsViewSet(ListModelMixin, GenericViewSet):
     def get_queryset(self):
-        queryset = Tweet.objects.filter(user=self.request.user)
+        queryset = Tweet.objects.get(pk=self.kwargs['tweet_pk']).retweets
         return queryset
 
     def get_serializer_context(self):
         return {'user':self.request.user}
 
     serializer_class = ReTweetsSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
 
 
 

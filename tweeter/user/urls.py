@@ -1,12 +1,14 @@
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from . import views
 
 app_name = 'user'
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt'))
+    path('auth/', include('djoser.urls.jwt')),
+    path('followers/', views.Followers.as_view(), name='followers')
 ]
 
 

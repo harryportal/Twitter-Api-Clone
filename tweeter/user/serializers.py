@@ -33,7 +33,7 @@ class UserCreateSerializer(BaseUserSerializer):
         fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password',
                   'phone', 'date_of_birth']
 
-class TweetsUserSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     """ to be used for displaying the tweets and user profile """
     fullname = serializers.SerializerMethodField()
 
@@ -67,10 +67,10 @@ class CurrentUserSerializer(UserSerializer):
         return following
 
     class Meta(UserSerializer.Meta):
-        fields = ['fullname','username','email','image','bio','location', 'website','date_joined','followers','following']
+        fields = ['id','fullname','username','email','image','bio','location', 'website','date_joined','followers','following']
 
 
-
-
+class Followerserializer(serializers.Serializer):
+    id = serializers.IntegerField()
 
 
