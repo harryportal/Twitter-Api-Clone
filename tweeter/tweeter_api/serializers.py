@@ -31,7 +31,6 @@ class UserTweetsSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField()
     date_created = serializers.SerializerMethodField()
     retweets_count = serializers.IntegerField()
-    comments = ViewCommentSerializer(many=True)
 
     def get_date_created(self, tweet: Tweet):
         """ This returns the date (day and month) and add the year only if it's not the current year"""
@@ -39,8 +38,8 @@ class UserTweetsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['content','image','likes_count','date_created', 'comments',
-                  'comments_count','retweets_count']
+        fields = ['content','image','likes_count','date_created','comments_count','retweets_count']
+
 
 class ReTweetsSerializer(serializers.ModelSerializer):
     retweets = BaseUserSerializer(many=True)

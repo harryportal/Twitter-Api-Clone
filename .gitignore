@@ -2,3 +2,4 @@
 *.pyc
 tweeter/user/__pycache__/
 .idea/
+tweeter/user/profile
