@@ -27,6 +27,7 @@ class CreateTweetSerializer(serializers.ModelSerializer):
 
 
 class UserTweetsSerializer(serializers.ModelSerializer):
+    user = BaseUserSerializer()
     likes_count = serializers.IntegerField()
     comments_count = serializers.IntegerField()
     date_created = serializers.SerializerMethodField()
@@ -38,7 +39,7 @@ class UserTweetsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['content','image','likes_count','date_created','comments_count','retweets_count']
+        fields = ['user','content','image','likes_count','date_created','comments_count','retweets_count']
 
 
 class ReTweetsSerializer(serializers.ModelSerializer):

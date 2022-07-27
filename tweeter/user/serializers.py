@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import User
 from django.db import IntegrityError
 from django.db.models import Count
+from tweeter.utils import format_date_created
 
 
 class UserCreateSerializer(BaseUserSerializer):
@@ -34,7 +35,7 @@ class UserCreateSerializer(BaseUserSerializer):
                   'phone', 'date_of_birth']
 
 class BaseUserSerializer(serializers.ModelSerializer):
-    """ to be used for displaying the tweets and user profile """
+    """ to be used for displaying followers or tweets users """
     fullname = serializers.SerializerMethodField()
 
     def get_fullname(self, user: User):
@@ -42,12 +43,12 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username','profile_picture','fullname','bio']
+        fields = ['id','username','profile_picture','fullname','bio']
 
 
 class CurrentUserSerializer(UserSerializer):
     fullname = serializers.SerializerMethodField()
-    date_joined = serializers.SerializerMethodField()
+    date_created = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
 
@@ -55,8 +56,8 @@ class CurrentUserSerializer(UserSerializer):
     def get_fullname(self, user: User):
         return user.get_full_name()
 
-    def get_date_joined(self, user: User):
-        return user.date_joined.strftime("%b-%y")
+    def get_date_created(self, user: User):
+        return format_date_created(user)
 
     def get_followers(self, user: User):
         followers = user.followers.count()
@@ -68,7 +69,7 @@ class CurrentUserSerializer(UserSerializer):
 
     class Meta(UserSerializer.Meta):
         model = User
-        fields = ['id','fullname','username','email','profile_picture','bio','location', 'website','date_joined','followers','following']
+        fields = ['id','fullname','username','email','profile_picture','bio','location', 'website','date_created','followers','following']
 
 
 class Followerserializer(serializers.Serializer):
