@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, ListModelMixin
-from .serializers import CreateTweetSerializer, UserTweetsSerializer, ReTweetsSerializer
+from .serializers import CreateTweetSerializer, TweetsSerializer, ReTweetsSerializer
 from .models import Tweet
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Count, Q
@@ -36,7 +36,7 @@ class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, DestroyModelMixin, Ge
                                                   retweets_count=Count('retweets'))
         return tweets
 
-    serializer_class = UserTweetsSerializer
+    serializer_class = TweetsSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 class RetweetsViewSet(ListModelMixin, GenericViewSet):

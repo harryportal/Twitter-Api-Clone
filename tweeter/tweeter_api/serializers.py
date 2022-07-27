@@ -25,9 +25,13 @@ class CreateTweetSerializer(serializers.ModelSerializer):
         model = Tweet
         fields = ['content','image']
 
+class TweetUserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        """ Returns only this details for a individual tweets user"""
+        fields = ['id','username','profile_picture','fullname']
 
-class UserTweetsSerializer(serializers.ModelSerializer):
-    user = BaseUserSerializer()
+class TweetsSerializer(serializers.ModelSerializer):
+    user = TweetUserSerializer()
     likes_count = serializers.IntegerField()
     comments_count = serializers.IntegerField()
     date_created = serializers.SerializerMethodField()
