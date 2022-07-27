@@ -7,11 +7,12 @@ app_name = 'user'
 
 
 urlpatterns = [
-    path('me/following/', views.following, name='following'),
-    path('<int:pk>/followers', views.getFollowers.as_view(), name='followers'),
-    path('<int:pk>/following', views.getFollowing.as_view(), name='following'),
-    path('', include('djoser.urls')),
-    path('', include('djoser.urls.jwt'))
+   path('me/add-following/', views.Following.as_view(), name='following'),
+   path('<int:pk>/', views.UserProfile.as_view(), name='profile'),
+   path('<int:pk>/followers/', views.getFollowers.as_view(), name='followers'),
+   path('<int:pk>/following/', views.getFollowing.as_view(), name='following'),
+   path('', include('djoser.urls')),
+   path('', include('djoser.urls.jwt'))
 
 ]
 

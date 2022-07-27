@@ -27,6 +27,17 @@ class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, Ge
 
     permission_classes = [IsAuthenticated]
 
+class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
+    def get_queryset(self):
+        """ displays all tweets by the current user and the users followed """
+        current_user = self.request.user
+        tweets = Tweet.objects.filter(Q(user=current_user) | Q(user__in=current_user.following.all())).\
+            prefetch_related('retweets').annotate(likes_count=Count('likes'), comments_count=Count('comments'),
+                                                  retweets_count=Count('retweets'))
+        return tweets
+
+    serializer_class = UserTweetsSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 class RetweetsViewSet(ListModelMixin, GenericViewSet):
     def get_queryset(self):
@@ -40,14 +51,4 @@ class RetweetsViewSet(ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
 
 
-class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
-    def get_queryset(self):
-        """ displays all tweets by the current user and the users followed """
-        current_user = self.request.user
-        tweets = Tweet.objects.filter(Q(user=current_user) | Q(user__in=current_user.following.all())).\
-            prefetch_related('retweets').annotate(likes_count=Count('likes'), comments_count=Count('comments'),
-                                                  retweets_count=Count('retweets'))
-        return tweets
 
-    serializer_class = UserTweetsSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]

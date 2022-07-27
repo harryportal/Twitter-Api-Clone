@@ -1,5 +1,6 @@
 /venv
 *.pyc
-tweeter/user/__pycache__/
+tweeter/*.pyc
 .idea/
 tweeter/user/profile
+

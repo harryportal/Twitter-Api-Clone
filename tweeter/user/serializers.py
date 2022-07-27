@@ -67,6 +67,7 @@ class CurrentUserSerializer(UserSerializer):
         return following
 
     class Meta(UserSerializer.Meta):
+        model = User
         fields = ['id','fullname','username','email','profile_picture','bio','location', 'website','date_joined','followers','following']
 
 

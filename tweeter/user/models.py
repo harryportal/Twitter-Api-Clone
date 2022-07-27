@@ -16,6 +16,9 @@ class User(AbstractUser):
     website = models.URLField(null=True)
     following = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='followers')
 
+    def __str__(self):
+        return f'{self.username} === {self.email} '
+
 
 
 
