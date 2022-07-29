@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Tweet
 from tweeter.utils import format_date_created
 from user.serializers import BaseUserSerializer
-from comments.serializers import ViewCommentSerializer
+from comments.serializers import CommentSerializer
 
 
 class CreateTweetSerializer(serializers.ModelSerializer):
@@ -36,6 +36,7 @@ class TweetsSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField()
     date_created = serializers.SerializerMethodField()
     retweets_count = serializers.IntegerField()
+    comments = CommentSerializer(many=True)
 
     def get_date_created(self, tweet: Tweet):
         """ This returns the date (day and month) and add the year only if it's not the current year"""
@@ -43,7 +44,8 @@ class TweetsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id','user','content','image','likes_count','date_created','comments_count','retweets_count']
+        fields = ['id','user','content','image','likes_count','date_created',
+                  'comments_count','retweets_count','comments']
 
 
 class ReTweetsSerializer(serializers.ModelSerializer):

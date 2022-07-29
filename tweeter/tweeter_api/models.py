@@ -15,7 +15,7 @@ class TweetsManager(models.Manager):
 class TweetLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tweet = models.ForeignKey('Tweet', on_delete=models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_liked = models.DateTimeField(auto_now_add=True)
 
 
 class Tweet(models.Model):

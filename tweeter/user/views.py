@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
-
+from user.utils import get_user
 
 class Following(APIView):
     def post(self, request):
@@ -19,7 +19,9 @@ class Following(APIView):
         user_id = serializer.data.get('id')
         if user_id == current_user.id:  # ensure the user cannnot follow the same user
             return Response({'error': 'User cannot follow the same user'}, 400)
-        user = get_object_or_404(User, pk=user_id)  # work on a decorator for this later
+        user = get_user(User,user_id)
+        if user[0] is False:
+            return user[1]  # returns the 404 error specified in the get_object function
         following = current_user.following  # people the current user are following
         if user in following.all():
             following.remove(user)
@@ -32,8 +34,10 @@ class Following(APIView):
 
 class getFollowers(APIView):
     def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serialiazer = BaseUserSerializer(user.followers.all(), many=True)
+        user = get_user(User,pk)
+        if user[0] is False:
+            return user[1]
+        serialiazer = BaseUserSerializer(user[1].followers.all(), many=True)
         return Response(serialiazer.data)
 
     permission_classes = [IsAuthenticated]
@@ -41,8 +45,10 @@ class getFollowers(APIView):
 
 class getFollowing(APIView):
     def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serialiazer = BaseUserSerializer(user.following.all(), many=True)
+        user = get_user(User,pk)
+        if user[0] is False:
+            return user[1]
+        serialiazer = BaseUserSerializer(user[1].following.all(), many=True)
         return Response(serialiazer.data)
 
     permission_classes = [IsAuthenticated]
@@ -50,8 +56,10 @@ class getFollowing(APIView):
 
 class UserProfile(APIView):
     def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serializer = CurrentUserSerializer(user)
+        user = get_user(User,pk)
+        if user[0] is False:
+            return user[1]
+        serializer = CurrentUserSerializer(user[1])
         return Response(serializer.data)
 
     permission_classes = [IsAuthenticated]
