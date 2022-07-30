@@ -4,3 +4,4 @@ tweeter/*.pyc
 .idea/
 tweeter/user/profile
 
+tweeter/data/
