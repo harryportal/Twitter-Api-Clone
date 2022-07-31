@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, ListModelMixin
-from .serializers import CreateTweetSerializer, TweetsSerializer, ReTweetsSerializer
+from .serializers import CreateTweetSerializer, TweetsSerializer, ReTweetsSerializer, AllTweetsSerializer,\
+    TweetUserSerializer
 from .models import Tweet
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Count, Q
@@ -9,7 +10,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from user.models import User
+from .utils import get_tweet
 
 class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
     """ The update mixin was not added since tweeter currently does not support editing a tweet"""
@@ -36,32 +38,64 @@ class AllTweetsViewSet(ListAPIView):
         current_user = self.request.user
         tweets = Tweet.tweets.filter(Q(user=current_user) | Q(user__in=current_user.following.all()))
         return tweets
-    serializer_class = TweetsSerializer
+
+    serializer_class = AllTweetsSerializer
     permission_classes = [IsAuthenticated]
 
 
 class TweetViewSet(APIView):
     def get(self, request, pk):
-        tweet = Tweet.tweets.get(pk=pk)
-        serializer = TweetsSerializer(tweet)
+        tweet = get_tweet(pk)
+        if tweet[0] is False:
+            return tweet[1]  # returns the error message defined in the util function
+        serializer = TweetsSerializer(tweet[1])
         return Response(serializer.data)
 
     permission_classes = [IsAuthenticated]
 
 
 class Retweets(APIView):
-    def get(self,request,pk):
-        tweets = Tweet.objects.get(pk=pk)
-        serializer = ReTweetsSerializer(tweets)
+    def get(self, request, pk):
+        tweet = get_tweet(pk)
+        if tweet[0] is False:
+            return tweet[1]
+        serializer = ReTweetsSerializer(tweet[1])
         return Response(serializer.data)
 
-    def post(self,request,pk):
+    def post(self, request, pk):
         user = request.user
-        retweets = Tweet.objects.get(pk=pk).retweets
+        tweet = get_tweet(pk)
+        if tweet[0] is False:
+            return tweet[1]
+        retweets = tweet[1].retweets
         if user in retweets.all():
             retweets.remove(user)
         else:
             retweets.add(user)
-        return Response({'message':'success'})
+        return Response({'message': 'success'})
+    permission_classes = [IsAuthenticated]
+
+
+class Like(APIView):
+    def get(self, request, pk):
+        """ returns the number of likes and those that liked a tweet"""
+        tweet = get_tweet(pk)
+        if tweet[0] is False:
+            return tweet[1]
+        serializer = TweetUserSerializer(tweet[1].likes, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk):
+        """ like or unlike a post of already liked"""
+        tweet = get_tweet(pk)
+        if tweet[0] is False:
+            return tweet[1]
+        user = self.request.user
+        if user in tweet[1].likes.all():
+            tweet.likes.remove(user)
+        else:
+            tweet.likes.add(user)
+        return Response(status.HTTP_200_OK)
+    permission_classes = [IsAuthenticated]
 
 

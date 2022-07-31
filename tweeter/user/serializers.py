@@ -51,6 +51,7 @@ class CurrentUserSerializer(UserSerializer):
     date_created = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
+    tweets_count = serializers.SerializerMethodField()
 
 
     def get_fullname(self, user: User):
@@ -67,9 +68,13 @@ class CurrentUserSerializer(UserSerializer):
         following = user.following.count()
         return following
 
+    def get_tweets_count(self, user: User):
+        return user.tweets.count()
+
     class Meta(UserSerializer.Meta):
         model = User
-        fields = ['id','fullname','username','email','profile_picture','bio','location', 'website','date_created','followers','following']
+        fields = ['id','fullname','username','email','profile_picture','bio',
+                  'location', 'website','date_created','followers','following','tweets_count']
 
 
 class Followerserializer(serializers.Serializer):
