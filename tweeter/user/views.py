@@ -23,6 +23,7 @@ class Following(APIView):
         if user[0] is False:
             return user[1]  # returns the 404 error specified in the get_object function
         following = current_user.following  # people the current user are following
+        user = user[1] # the user object returned from the list
         if user in following.all():
             following.remove(user)
         else:

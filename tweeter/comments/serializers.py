@@ -26,6 +26,7 @@ class ViewCommentSerializer(serializers.ModelSerializer):
         instance = Comment.objects.create(user=self.context['user'],tweet=tweet, **validated_data)
         return instance
 
+
     class Meta:
         model = Comment
         fields = ['content','image']
@@ -35,4 +36,4 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['user','image','content','likes','created_at']
+        fields = ['id','user','image','content','likes','created_at']

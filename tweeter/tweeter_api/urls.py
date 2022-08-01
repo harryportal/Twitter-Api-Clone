@@ -11,7 +11,7 @@ router.register('me', views.UserTweetsViewSet, basename='tweet')
 urlpatterns = [
     path('', include(router.urls)),
     path('all/',views.AllTweetsViewSet.as_view(), name='alltweets'),
-    path('<int:pk>/', views.TweetViewSet.as_view(), name='tweet'),
-    path('<int:pk>/retweets', views.Retweets.as_view(), name='retweets'),
-    path('<int:pk>/likes',views.Like.as_view(), name='likes')
+    path('<int:pk>/', views.TweetsViewSet.as_view(), name='tweet'),
+    path('<int:pk>/retweets/', views.Retweets.as_view(), name='retweets'),
+    path('<int:pk>/likes/',views.Like.as_view(), name='likes')
 ]

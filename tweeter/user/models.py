@@ -15,6 +15,8 @@ class User(AbstractUser):
     location = models.CharField(max_length=100,null=True)
     website = models.URLField(null=True)
     following = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='followers')
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return f'{self.username}'
