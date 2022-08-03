@@ -14,7 +14,7 @@ class TweetLike(models.Model):
 class Tweet(models.Model):
     retweets = models.ManyToManyField(User, related_name='retweets')
     content = models.CharField(max_length=400, null=True, blank=True)
-    user = models.ForeignKey(User, related_name='tweets', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='tweets', on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='tweets/images', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, through=TweetLike, related_name='likes')

@@ -1,4 +1,4 @@
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 from .models import Comment
 from .serializers import ViewCommentSerializer
@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-class CommentsViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
+class CommentsViewSet(CreateModelMixin, DestroyModelMixin,RetrieveModelMixin,GenericViewSet):
     queryset = Comment.objects.all()
     serializer_class = ViewCommentSerializer
     permission_classes = [IsAuthenticated]
