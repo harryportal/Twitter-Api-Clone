@@ -34,7 +34,7 @@ class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, De
     permission_classes = [IsAuthenticated]
 
 
-class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin,GenericViewSet):
+class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     def get_queryset(self):
         """ displays all tweets by the current user and the users followed """
         current_user = self.request.user
@@ -44,9 +44,10 @@ class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin,GenericViewSet):
     def get_serializer_context(self):
         return {'user':self.request.user}
 
-    serializer_class = AllTweetsSerializer
+    def get_serializer_class(self):
+        pk = self.kwargs.get('pk')
+        return TweetsSerializer if pk else AllTweetsSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-
 
 class Retweets(APIView):
     def get(self, request, pk):

@@ -7,5 +7,5 @@ router = routers.DefaultRouter()
 router.register('', CommentsViewSet)
 
 urlpatterns = [
-    path('<int:id>/',include(router.urls))
+    path('<int:tweet_id>/',include(router.urls))
 ]

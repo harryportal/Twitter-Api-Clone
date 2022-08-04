@@ -6,7 +6,7 @@ app_name = 'tweets'
 
 router = routers.DefaultRouter()
 router.register('me', views.UserTweetsViewSet, basename='mytweet')
-router.register('',views.AllTweetsViewSet, basename='alltweets')
+router.register('',views.AllTweetsViewSet, basename='tweets')
 
 
 urlpatterns = [
