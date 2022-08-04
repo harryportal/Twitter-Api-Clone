@@ -10,7 +10,7 @@ class ViewCommentSerializer(serializers.ModelSerializer):
         return format_date_created(comment)
 
     def validate(self, attrs):
-        """ ensures the user posts a least a picture or text when tweeting"""
+        """ ensures the user posts a least a picture or text when commenting"""
         image = attrs.get('image')
         content = attrs.get('content')
         tweet_id = self.context['tweet_id']
@@ -33,7 +33,15 @@ class ViewCommentSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = BaseUserSerializer()
+    date_created = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
+
+    def get_likes_count(self, comment):
+        return comment.likes.count()
+
+    def get_date_created(self, comment):
+        return format_date_created(comment)
 
     class Meta:
         model = Comment
-        fields = ['id','user','image','content','likes','created_at']
+        fields = ['id','user','image','content','date_created','likes_count']

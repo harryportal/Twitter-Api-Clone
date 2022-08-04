@@ -18,4 +18,4 @@ class Comment(models.Model):
     likes = models.ManyToManyField(User, related_name='comments_likes')
     comments = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     retweets = models.ManyToManyField('self')
-    created_at = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(auto_now_add=True)
