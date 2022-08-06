@@ -12,8 +12,8 @@ class UserCreateSerializer(BaseUserSerializer):
     phone = serializers.CharField(max_length=20, allow_null=True)
 
     def create(self, validated_data):
-        email = validated_data.get('email',None)
-        phone = validated_data.get('email',None)
+        email = validated_data.get('email', None)
+        phone = validated_data.get('email', None)
         print(email)
         validated_data.pop('confirm_password')
         if not email and not phone:
@@ -31,8 +31,9 @@ class UserCreateSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         model = User
-        fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password',
+        fields = ['first_name', 'username', 'last_name', 'email', 'password', 'confirm_password',
                   'phone', 'date_of_birth']
+
 
 class BaseUserSerializer(serializers.ModelSerializer):
     """ to be used for displaying followers or tweets users """
@@ -43,7 +44,7 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id','username','profile_picture','fullname','bio']
+        fields = ['id', 'username', 'profile_picture', 'fullname', 'bio']
 
 
 class CurrentUserSerializer(UserSerializer):
@@ -52,7 +53,8 @@ class CurrentUserSerializer(UserSerializer):
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
     tweets_count = serializers.SerializerMethodField()
-
+    profile_picture = serializers.ImageField(read_only=True)  # configure a different view for image upload
+    cover_picture = serializers.ImageField(read_only=True)
 
     def get_fullname(self, user: User):
         return user.get_full_name()
@@ -73,11 +75,9 @@ class CurrentUserSerializer(UserSerializer):
 
     class Meta(UserSerializer.Meta):
         model = User
-        fields = ['id','fullname','username','email','profile_picture','bio',
-                  'location', 'website','date_created','followers','following','tweets_count']
+        fields = ['id', 'fullname', 'username', 'email', 'profile_picture', 'cover_picture', 'bio',
+                  'location', 'website', 'date_created', 'followers', 'following', 'tweets_count']
 
 
 class Followerserializer(serializers.Serializer):
     id = serializers.IntegerField()
-
-

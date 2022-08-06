@@ -9,6 +9,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from user.utils import get_user
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
 
 class Following(APIView):
     def post(self, request):
@@ -56,6 +59,7 @@ class getFollowing(APIView):
 
 
 class UserProfile(APIView):
+    """To view any user profile """
     def get(self, request, pk):
         user = get_user(User,pk)
         if user[0] is False:
@@ -64,3 +68,22 @@ class UserProfile(APIView):
         return Response(serializer.data)
 
     permission_classes = [IsAuthenticated]
+
+# @api_view(['POST'])
+# def upload_profile_pic(request):
+#     current_user = request.user
+#     image_file = request.FILES['image_file']
+#     image_type = request.POST['image_type']
+#     if settings.USE_S3:
+#         user.profile_picture = image_file
+#         upload = Upload(file=image_file)
+#         upload.save()
+#         image_url = upload.file.url
+#     else:
+#         fs = FileSystemStorage()
+#         filename = fs.save(image_file.name, image_file)
+#         image_url = fs.url(filename)
+
+
+
+
