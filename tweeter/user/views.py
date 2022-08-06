@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from user.utils import get_user
 
+
 class Following(APIView):
     def post(self, request):
         """ follow or unfollow a user"""
@@ -19,11 +20,11 @@ class Following(APIView):
         user_id = serializer.data.get('id')
         if user_id == current_user.id:  # ensure the user cannnot follow the same user
             return Response({'error': 'User cannot follow the same user'}, 400)
-        user = get_user(User,user_id)
+        user = get_user(User, user_id)
         if user[0] is False:
             return user[1]  # returns the 404 error specified in the get_object function
         following = current_user.following  # people the current user are following
-        user = user[1] # the user object returned from the list
+        user = user[1]  # the user object returned from the list
         if user in following.all():
             following.remove(user)
         else:
@@ -35,7 +36,7 @@ class Following(APIView):
 
 class getFollowers(APIView):
     def get(self, request, pk):
-        user = get_user(User,pk)
+        user = get_user(User, pk)
         if user[0] is False:
             return user[1]
         serialiazer = BaseUserSerializer(user[1].followers.all(), many=True)
@@ -46,7 +47,7 @@ class getFollowers(APIView):
 
 class getFollowing(APIView):
     def get(self, request, pk):
-        user = get_user(User,pk)
+        user = get_user(User, pk)
         if user[0] is False:
             return user[1]
         serialiazer = BaseUserSerializer(user[1].following.all(), many=True)
@@ -57,7 +58,7 @@ class getFollowing(APIView):
 
 class UserProfile(APIView):
     def get(self, request, pk):
-        user = get_user(User,pk)
+        user = get_user(User, pk)
         if user[0] is False:
             return user[1]
         serializer = CurrentUserSerializer(user[1])
