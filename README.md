@@ -18,3 +18,11 @@ To test the endpoints on postman, follow these easy steps:
 - Test the create user endpoint to create a new user
 - Test the /get-token endpoint to get a JWT Token that will be used to authenticate other endpoints
 
+
+TODO:
+- [ ] Liking and Unliking a comment
+- [ ] comment on other comments(nested comments)
+- [ ] support chatting using Django channels for websockets
+- [ ] Use redis for caching
+- [ ] Displaying retweeted tweets in feed
+
