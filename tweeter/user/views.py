@@ -13,7 +13,7 @@ from user.utils import get_user
 
 class Following(APIView):
     def post(self, request):
-        """ follow or unfollow a user"""
+        """ FOLLOW OR UNFOLLOW A USER """
         current_user = self.request.user
         serializer = Followerserializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -36,6 +36,7 @@ class Following(APIView):
 
 class getFollowers(APIView):
     def get(self, request, pk):
+        """ GET USERS FOLLOWERS WITH USER_ID """
         user = get_user(User, pk)
         if user[0] is False:
             return user[1]
@@ -47,6 +48,7 @@ class getFollowers(APIView):
 
 class getFollowing(APIView):
     def get(self, request, pk):
+        """ GET USERS FOLLOWING WITH USER_ID """
         user = get_user(User, pk)
         if user[0] is False:
             return user[1]
@@ -57,6 +59,7 @@ class getFollowing(APIView):
 
 
 class UserProfile(APIView):
+    """ GET A USER PROFILE """
     def get(self, request, pk):
         user = get_user(User, pk)
         if user[0] is False:

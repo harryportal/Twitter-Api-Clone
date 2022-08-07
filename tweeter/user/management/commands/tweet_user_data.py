@@ -14,4 +14,4 @@ class Command(BaseCommand):
         sql = Path(file_path).read_text()
 
         with connection.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.executescript(sql)
