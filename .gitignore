@@ -3,5 +3,6 @@
 tweeter/*.pyc
 .idea/
 tweeter/user/profile
+ tweeter/user/migrations/__pycache__/
 
 tweeter/data/
