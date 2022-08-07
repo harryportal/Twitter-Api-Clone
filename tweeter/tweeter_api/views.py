@@ -13,10 +13,11 @@ from rest_framework import status
 from user.models import User
 from .utils import get_tweet
 from rest_framework.viewsets import ModelViewSet
+from .pagination import DefaultPagination
 
 
 class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
-    """ The update mixin was not added since tweeter currently does not support editing a tweet"""
+    """ CREATE,RETREIVE,DELETE AND VIEW YOUR TWEETS """
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -35,22 +36,29 @@ class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, De
 
 
 class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    """ VIEW ALL PUBLICLY AVAIALABLE TWEETS """
     def get_queryset(self):
-        """ displays all tweets by the current user and the users followed """
         current_user = self.request.user
-        tweets = Tweet.objects.filter(Q(user=current_user) | Q(user__in=current_user.following.all()))
+        # tweets = Tweet.objects.filter(Q(user=current_user) | Q(user__in=current_user.following.all()))
+        tweets = Tweet.objects.all()
+        """not using the above query cos it makes the api boring since people can see all \
+        tweets except they follow another account"""
         return tweets
 
     def get_serializer_context(self):
-        return {'user':self.request.user}
+        return {'user': self.request.user}
 
     def get_serializer_class(self):
         pk = self.kwargs.get('pk')
         return TweetsSerializer if pk else AllTweetsSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = DefaultPagination
+
 
 class Retweets(APIView):
     def get(self, request, pk):
+        """ GET USERS THAT RETWEETED A TWEET"""
         tweet = get_tweet(pk)
         if tweet[0] is False:
             return tweet[1]
@@ -58,6 +66,7 @@ class Retweets(APIView):
         return Response(serializer.data)
 
     def post(self, request, pk):
+        """ RETWEET OR UNRETWEET """
         user = request.user
         tweet = get_tweet(pk)
         if tweet[0] is False:
@@ -74,7 +83,7 @@ class Retweets(APIView):
 
 class Like(APIView):
     def get(self, request, pk):
-        """ returns the number of likes and those that liked a tweet"""
+        """ GET USERS THAT LIKED A TWEET """
         tweet = get_tweet(pk)
         if tweet[0] is False:
             return tweet[1]
@@ -82,7 +91,7 @@ class Like(APIView):
         return Response(serializer.data)
 
     def post(self, request, pk):
-        """ like or unlike a post of already liked"""
+        """ LIKE OR UNLIKE A TWEET """
         tweet = get_tweet(pk)
         if tweet[0] is False:
             return tweet[1]

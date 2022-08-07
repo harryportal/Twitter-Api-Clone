@@ -6,7 +6,7 @@ import pytest
 @pytest.mark.django_db
 class TestComment:
     @pytest.mark.skip
-    def test_comment_on_tweet(self, authenticate_user, api_client):
+    def test_comment_on_tweet_authorised(self, authenticate_user, api_client):
         user = authenticate_user()
         tweet = baker.make(Tweet)
         response = api_client.post(f'/api/v1/comments/{tweet.id}/',{'content':'This is a random comment'})
@@ -14,7 +14,7 @@ class TestComment:
 
     def test_comment_on_tweet_anonymous(self, api_client):
         tweet = baker.make(Tweet)
-        response = api_client.get(f'/api/v1/tweets/{tweet.id}/',{'content':'This is a random comment'})
+        response = api_client.get(f'/api/v1/comments/{tweet.id}/',{'content':'This is a random comment'})
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_invalid_comment_on_tweet(self, authenticate_user, api_client):

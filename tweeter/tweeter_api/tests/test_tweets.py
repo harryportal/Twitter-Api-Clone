@@ -26,7 +26,7 @@ class TestRetrieveTweet:
     def test_get_tweet_anonymous_user(self,get_tweet):
         tweet = baker.make(Tweet)
         response = get_tweet(tweet.id)
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == status.HTTP_200_OK
 
     def test_get_tweet_authorised_user(self, get_tweet, authenticate_user):
         authenticate_user()

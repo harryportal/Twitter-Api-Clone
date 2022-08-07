@@ -1,0 +1,491 @@
+{
+	"info": {
+		"_postman_id": "d16a2181-18a1-4259-a5ae-03e734736ff8",
+		"name": "Tweeter_Api_Postman_Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "create account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Kuye\",\r\n    \"username\": \"harry1234\",\r\n    \"last_name\": \"Damilola\",\r\n    \"email\": \"harry@gmail.com\",\r\n    \"password\": \"112233david\",\r\n    \"confirm_password\": \"112233david\",\r\n    \"phone\": \"08059603392\",\r\n    \"date_of_birth\": \"2002-12-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\":\"harry@gmail.com\",\r\n\"password\":\"112233david\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/get-token",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"get-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET USER PROFILE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjYwMjM5MDY5LCJqdGkiOiI1MWVhYzU4MGMyMDQ0ODBiODIwZDgwNjI1MTc0NGNkNiIsInVzZXJfaWQiOjExfQ.0aSLXUGqwXD3SVio0VPkSBHmOr5LJkMzZQDr7i7fLh4",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/me/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET FOLLOWING",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/11/following/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"11",
+								"following",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET FOLLOWERS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/11/followers/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"11",
+								"followers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FOLLOW OR UNFOLLOW",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/users/me/add-following/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"add-following",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Tweets",
+			"item": [
+				{
+					"name": "GET MY TWEETS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/tweets/me/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"tweets",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST A TWEET",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"This is a another post\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/tweets/me/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"tweets",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE MY TWEET",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/tweets/me/1/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"tweets",
+								"me",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET MY TWEET WITH ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/tweets/me/5/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"tweets",
+								"me",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL TWEETS",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GET TWEET WITH ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "COMMENT ON A TWEET",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/comments/1/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"comments",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE A COMMENT",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:8000/api/v1/comments/1/6/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"comments",
+								"1",
+								"6",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LIKES",
+			"item": [
+				{
+					"name": "LIKE / UNLIKE A POST",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GET LIKES FOR A POST",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjYwMjQ1ODA4LCJqdGkiOiI2ZTFiYWRhMzMyOTA0NWQzOTM1NDMyMDkwMTk2NTlkZSIsInVzZXJfaWQiOjExfQ.e0bxBaVi75TEPbYKV_Qh52p9CoKW2n2JrojS8gN6w3E",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
