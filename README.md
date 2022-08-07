@@ -7,7 +7,7 @@ To run on a development server:
 > cd tweeter
 > pip install requirements.txt
 ```
-The following command creates and populate the sqlite database with user and tweets data:
+This creates and populate the sqlite database with user and tweets data:
 ```sh
 > python manage.py migrate
 > python manage.py tweet_user_data 
