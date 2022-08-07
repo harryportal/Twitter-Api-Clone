@@ -13,6 +13,7 @@ from rest_framework import status
 from user.models import User
 from .utils import get_tweet
 from rest_framework.viewsets import ModelViewSet
+from .pagination import DefaultPagination
 
 
 class UserTweetsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
@@ -52,6 +53,7 @@ class AllTweetsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return TweetsSerializer if pk else AllTweetsSerializer
 
     permission_classes = [IsOwnerOrReadOnly]
+    pagination_class = DefaultPagination
 
 
 class Retweets(APIView):
