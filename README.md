@@ -1,5 +1,5 @@
 # Twitter-Api-Clone
-This is an simple Twitter Api Clone built with Django Rest Framework:rocket:
+This is a simple Twitter Api Clone built with Django Rest Framework:rocket:
 
 [Api is live here!:v:](https://tweeter-apiclone.herokuapp.com)
 ***
