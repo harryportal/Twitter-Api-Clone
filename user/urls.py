@@ -1,4 +1,4 @@
-from djoser import views
+from djoser import views as djoserviews
 from rest_framework_nested import routers
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -14,7 +14,7 @@ urlpatterns = [
    path('<int:pk>/', views.UserProfile.as_view(), name='profile'),
    path('<int:pk>/followers/', views.getFollowers.as_view(), name='followers'),
    path('<int:pk>/following/', views.getFollowing.as_view(), name='following'),
-   router.register("", views.UserViewSet),
+   router.register("", djoserviews.UserViewSet),
    path('', include('djoser.urls.jwt'))
 
 ]
