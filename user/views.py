@@ -11,7 +11,7 @@ from rest_framework import generics
 from user.utils import get_user
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+from .permissions import IsOwnerOrReadOnly
 
 
 class Following(APIView):
@@ -63,7 +63,6 @@ class getFollowing(APIView):
 
 class UserProfile(APIView):
     """ GET A USER PROFILE """
-    http_method_names = ['get']
     def get(self, request, pk):
         user = get_user(User, pk)
         if user[0] is False:
@@ -71,7 +70,7 @@ class UserProfile(APIView):
         serializer = CurrentUserSerializer(user[1])
         return Response(serializer.data)
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
 
 @api_view(['POST'])
 def upload_profile_pic(request):
