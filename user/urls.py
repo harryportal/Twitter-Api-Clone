@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 from djoser.urls import urlpatterns as url
-from rest_framework_simplejwt import jwtviews
+from rest_framework_simplejwt import views as jwtviews
 
 app_name = 'user'
 router = routers.DefaultRouter()
