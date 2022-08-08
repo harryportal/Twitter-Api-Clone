@@ -21,7 +21,7 @@ class UserCreateSerializer(BaseUserSerializer):
         try:
             user = self.perform_create(validated_data)
         except IntegrityError:
-            self.fail("Unable to create User")
+            raise serializers.ValidationError("User Exists with ID")
         return user
 
     def validate(self, attrs):
