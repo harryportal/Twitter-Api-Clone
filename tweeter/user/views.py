@@ -9,7 +9,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from user.utils import get_user
-
+from rest_framework.decorators import permission_classes
+from .permissions import IsOwnerOrReadOnly
 
 class Following(APIView):
     def post(self, request):
@@ -58,13 +59,14 @@ class getFollowing(APIView):
     permission_classes = [IsAuthenticated]
 
 
-class UserProfile(APIView):
-    """ GET A USER PROFILE """
-    def get(self, request, pk):
-        user = get_user(User, pk)
-        if user[0] is False:
-            return user[1]
-        serializer = CurrentUserSerializer(user[1])
-        return Response(serializer.data)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,IsOwnerOrReadOnly])
+def UserProfile(request, pk):
+    user = get_user(User, pk)
+    if user[0] is False:
+        return user[1]
+    serializer = CurrentUserSerializer(user[1])
+    return Response(serializer.data)
 
-    permission_classes = [IsAuthenticated]
+
+
