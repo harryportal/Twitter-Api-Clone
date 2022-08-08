@@ -5,8 +5,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 from djoser.urls import urlpatterns as url
-app_name = 'user'
+from rest_framework_simplejwt import jwtviews
 
+app_name = 'user'
 router = routers.DefaultRouter()
 router.register("", djoserviews.UserViewSet)
 
@@ -16,7 +17,9 @@ urlpatterns = [
    path('<int:pk>/followers/', views.getFollowers.as_view(), name='followers'),
    path('<int:pk>/following/', views.getFollowing.as_view(), name='following'),
    path('', include(router.urls)),
-   path('', include('djoser.urls.jwt'))
+   path("get-token", jwtviews.TokenObtainPairView.as_view(), name="jwt-create"),
+   path("refresh-token", jwtviews.TokenRefreshView.as_view(), name="jwt-refresh"),
+   path("verify-token", jwtviews.TokenVerifyView.as_view(), name="jwt-verify")
 
 ]
 
