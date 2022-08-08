@@ -62,11 +62,7 @@ class getFollowing(APIView):
 
 
 class UserProfile(APIView):
-<<<<<<< HEAD
-    """To view any user profile """
-=======
     """ GET A USER PROFILE """
->>>>>>> main
     def get(self, request, pk):
         user = get_user(User, pk)
         if user[0] is False:
@@ -76,20 +72,21 @@ class UserProfile(APIView):
 
     permission_classes = [IsAuthenticated]
 
-# @api_view(['POST'])
-# def upload_profile_pic(request):
-#     current_user = request.user
-#     image_file = request.FILES['image_file']
-#     image_type = request.POST['image_type']
-#     if settings.USE_S3:
-#         user.profile_picture = image_file
-#         upload = Upload(file=image_file)
-#         upload.save()
-#         image_url = upload.file.url
-#     else:
-#         fs = FileSystemStorage()
-#         filename = fs.save(image_file.name, image_file)
-#         image_url = fs.url(filename)
+@api_view(['POST'])
+def upload_profile_pic(request):
+    current_user = request.user
+    image_file = request.FILES['image_file']
+    image_type = request.POST['image_type']
+    if settings.USE_S3:
+        user.profile_picture = image_file
+        upload = Upload(file=image_file)
+        upload.save()
+        image_url = upload.file.url
+    else:
+        fs = FileSystemStorage()
+        filename = fs.save(image_file.name, image_file)
+        image_url = fs.url(filename)
+    return Response({'message':'image succesfully uploaded'},status.HTTP_200_OK)
 
 
 
