@@ -21,13 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p0lkh9ghd!)i#hf19(f%ope1$yj8e$9zjpti+g7!c@7w__6%mc'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['tweeter-apiclone.herokuapp.com']
 
 # Application definition
 
@@ -98,23 +97,13 @@ SIMPLE_JWT = {
 }
 WSGI_APPLICATION = 'tweeter.wsgi.application'
 
-
+import dj_database_url
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-if os.environ.get('PRODUCTION'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': {dj_database_url.config()}
+            }
+
 
 
 AUTH_USER_MODEL = 'user.User'
