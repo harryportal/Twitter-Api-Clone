@@ -81,7 +81,8 @@ TEMPLATES = [
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'TWIITER CLONE API',
-    'DESCRIPTION': 'This is a simple clone of Twiiter API built with Django Rest Framework',
+    'DESCRIPTION': "This is a simple clone of Twiiter API built with Django Rest Framework \n Use Desktop view if you're"
+                   "viewing with mobile!",
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_DIST': 'SIDECAR',
