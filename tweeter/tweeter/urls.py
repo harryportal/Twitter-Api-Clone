@@ -25,7 +25,7 @@ admin.site.index_title = 'twitter api!'
 
 urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/v1/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('user.urls',  namespace='user')),
     path('api/v1/tweets/', include('tweeter_api.urls', namespace='tweets')),
