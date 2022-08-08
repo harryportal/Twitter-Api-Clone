@@ -4,5 +4,7 @@ tweeter/*.pyc
 .idea/
 tweeter/user/profile
  tweeter/user/migrations/__pycache__/
-
+/data/
+/db.sqlite3
+/user/profile/
 tweeter/data/
