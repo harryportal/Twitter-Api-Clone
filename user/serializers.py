@@ -7,6 +7,7 @@ from tweeter.utils import format_date_created
 
 
 class UserCreateSerializer(BaseUserSerializer):
+    id = serializers.IntegerField(read_only=True)
     confirm_password = serializers.CharField(max_length=25, write_only=True)
     email = serializers.EmailField(allow_null=True)
     phone = serializers.CharField(max_length=20, allow_null=True)
