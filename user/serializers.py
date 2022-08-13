@@ -54,8 +54,8 @@ class CurrentUserSerializer(UserSerializer):
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
     tweets_count = serializers.SerializerMethodField()
-    profile_picture = serializers.ImageField(read_only=True)  # configure a different view for image upload
-    cover_picture = serializers.ImageField(read_only=True)
+    profile_picture = serializers.ImageField()  # configure a different view for image upload
+    cover_picture = serializers.ImageField()
 
     def get_fullname(self, user: User):
         return user.get_full_name()
