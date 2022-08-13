@@ -8,3 +8,5 @@ tweeter/user/profile
 /db.sqlite3
 /user/profile/
 tweeter/data/
+tweeter/db.sqlite3
+
