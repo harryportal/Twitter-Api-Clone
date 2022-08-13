@@ -27,6 +27,7 @@ Follow these easy steps to test all the endpoints:
 
 
 UPDATES:
+- [x] AWS S3 for static/media files
 - [ ] Liking and Unliking a comment
 - [ ] comment on other comments(nested comments)
 - [ ] support chatting using Django channels for websockets
