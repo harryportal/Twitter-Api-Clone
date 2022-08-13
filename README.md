@@ -1,5 +1,7 @@
 # Twitter-Api-Clone
-This is an simple Twitter Api Clone built with Django Rest Framework:rocket:
+This is a simple Twitter Api Clone built with Django Rest Framework:rocket:
+
+[Api is live here!:v:](https://tweeter-apiclone.herokuapp.com)
 ***
 To run on a development server: 
 ```sh
@@ -25,6 +27,7 @@ Follow these easy steps to test all the endpoints:
 
 
 UPDATES:
+- [x] AWS S3 for static/media files
 - [ ] Liking and Unliking a comment
 - [ ] comment on other comments(nested comments)
 - [ ] support chatting using Django channels for websockets
