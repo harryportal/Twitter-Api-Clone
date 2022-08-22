@@ -5,7 +5,6 @@ from . import views
 from djoser.urls import urlpatterns as url
 app_name = 'user'
 
-
 urlpatterns = [
    path('me/add-following/', views.Following.as_view(), name='following'),
    path('<int:pk>/', views.UserProfile, name='profile'),
@@ -13,9 +12,7 @@ urlpatterns = [
    path('<int:pk>/following/', views.getFollowing.as_view(), name='following'),
    path('', include('djoser.urls')),
    path('', include('djoser.urls.jwt'))
-
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

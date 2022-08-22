@@ -7,6 +7,7 @@ from tweeter.utils import format_date_created
 
 
 class UserCreateSerializer(BaseUserSerializer):
+    id = serializers.IntegerField(read_only=True)
     confirm_password = serializers.CharField(max_length=25, write_only=True)
     email = serializers.EmailField(allow_null=True)
     phone = serializers.CharField(max_length=20, allow_null=True)
@@ -31,7 +32,7 @@ class UserCreateSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         model = User
-        fields = ['first_name','username', 'last_name', 'email', 'password', 'confirm_password',
+        fields = ['id', 'first_name','username', 'last_name', 'email', 'password', 'confirm_password',
                   'phone', 'date_of_birth']
 
 class BaseUserSerializer(serializers.ModelSerializer):
