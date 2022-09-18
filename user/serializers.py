@@ -15,7 +15,6 @@ class UserCreateSerializer(BaseUserSerializer):
     def create(self, validated_data):
         email = validated_data.get('email', None)
         phone = validated_data.get('email', None)
-        print(email)
         validated_data.pop('confirm_password')
         if not email and not phone:
             raise serializers.ValidationError('Phone number or Email Address must be present')
