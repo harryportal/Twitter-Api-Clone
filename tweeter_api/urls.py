@@ -1,7 +1,6 @@
-from rest_framework_nested import routers
+from rest_framework  import routers
 from . import views
 from django.urls import path,include
-
 app_name = 'tweets'
 
 router = routers.DefaultRouter()
