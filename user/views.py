@@ -12,6 +12,7 @@ from user.utils import get_user
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .permissions import IsOwnerOrReadOnly
+from django.db.models import Q
 
 
 class Following(APIView):
@@ -63,6 +64,7 @@ class getFollowing(APIView):
 
 class UserProfile(APIView):
     """ GET A USER PROFILE """
+
     def get(self, request, pk):
         user = get_user(User, pk)
         if user[0] is False:
@@ -70,24 +72,24 @@ class UserProfile(APIView):
         serializer = CurrentUserSerializer(user[1])
         return Response(serializer.data)
 
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
-
-@api_view(['POST'])
-def upload_profile_pic(request):
-    current_user = request.user
-    image_file = request.FILES['image_file']
-    image_type = request.POST['image_type']
-    if settings.USE_S3:
-        user.profile_picture = image_file
-        upload = Upload(file=image_file)
-        upload.save()
-        image_url = upload.file.url
-    else:
-        fs = FileSystemStorage()
-        filename = fs.save(image_file.name, image_file)
-        image_url = fs.url(filename)
-    return Response({'message':'image succesfully uploaded'},status.HTTP_200_OK)
+    permission_classes = [IsOwnerOrReadOnly]
 
 
-
-
+@api_view(['GET'])
+def search_users(request, name):
+    """ To search for a user with username, firstname or lastname"""
+    # convert the string to a list
+    name_query = set(name.split())  # since repititions won't obviously be needed
+    if len(name_query) > 4:
+        return Response({'message':'Lenght of search query exceeded'}, status.HTTP_400_BAD_REQUEST)
+    print(name_query)
+    for name in name_query:
+        # loop through the set and return
+        user = User.objects\
+            .filter(Q(username__icontains=name) | Q(first_name__icontains=name) | Q(last_name__icontains=name))\
+            .all()
+        if user:
+            serializer = BaseUserSerializer(user, many=True)
+            print(serializer)
+            return Response(serializer.data, status.HTTP_200_OK)
+    return Response({'message':'No result Found'}, status.HTTP_200_OK)

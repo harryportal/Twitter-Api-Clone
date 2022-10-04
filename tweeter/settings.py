@@ -13,7 +13,12 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+import whitenoise.middleware
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import channels_redis.core
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -21,16 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tweeter-apiclone.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,12 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'corsheaders',
     'djoser',
     'user',
+    'chat',
     'tweeter_api',
     'comments'
 ]
@@ -52,6 +60,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.common.CommonMiddleware',
@@ -105,12 +114,24 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME':timedelta(hours=1)
 }
 WSGI_APPLICATION = 'tweeter.wsgi.application'
+ASGI_APPLICATION = 'tweeter.asgi.application'
 
-import dj_database_url
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG':{
+            "hosts":[('127.0.0.1', 6379)]
+        },
+    }
+}
+
+#import dj_database_url
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {
-    'default': dj_database_url.config()
+    'default':{
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / 'db.sqlite3' }
             }
 
 

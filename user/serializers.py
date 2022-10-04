@@ -79,3 +79,9 @@ class CurrentUserSerializer(UserSerializer):
 
 class Followerserializer(serializers.Serializer):
     id = serializers.IntegerField()
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']

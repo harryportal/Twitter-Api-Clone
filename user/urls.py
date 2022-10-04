@@ -19,7 +19,8 @@ urlpatterns = [
    path('', include(router.urls)),
    path("get-token", jwtviews.TokenObtainPairView.as_view(), name="jwt-create"),
    path("refresh-token", jwtviews.TokenRefreshView.as_view(), name="jwt-refresh"),
-   path("verify-token", jwtviews.TokenVerifyView.as_view(), name="jwt-verify")
+   path("verify-token", jwtviews.TokenVerifyView.as_view(), name="jwt-verify"),
+   path("search/<str:name>", views.search_users, name="user-list")
 
 ]
 
