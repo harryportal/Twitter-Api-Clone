@@ -9,4 +9,4 @@ tweeter/user/profile
 /user/profile/
 tweeter/data/
 tweeter/db.sqlite3
-
+static
