@@ -10,3 +10,4 @@ tweeter/user/profile
 tweeter/data/
 tweeter/db.sqlite3
 static
+media
