@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
-import whitenoise.middleware
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
