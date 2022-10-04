@@ -13,25 +13,30 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+import whitenoise.middleware
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
+import channels_redis.core
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p0lkh9ghd!)i#hf19(f%ope1$yj8e$9zjpti+g7!c@7w__6%mc'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,11 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'corsheaders',
     'djoser',
     'user',
+    'chat',
     'tweeter_api',
     'comments'
 ]
@@ -52,6 +60,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -78,11 +89,13 @@ TEMPLATES = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    # OTHER SETTINGS
+
+    'TITLE': 'TWIITER CLONE API',
+    'DESCRIPTION': "This is a simple clone of Twiiter API built with Django Rest Framework(Use Desktop view if you're viewing with mobile!)",
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
+
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
@@ -96,28 +109,35 @@ REST_FRAMEWORK = {
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
-        'current_user':'user.serializers.CurrentUserSerializer'},
+        'current_user': 'user.serializers.CurrentUserSerializer'},
     "SEND_ACTIVATION_EMAIL": False,
     "SEND_CONFIRMATION_EMAIL": False,
-    "ACTIVATION_URL":'api/v1/users/activation/?uid={uid}&?token={token}'
+    "ACTIVATION_URL": 'api/v1/users/activation/?uid={uid}&?token={token}'
 }
-
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME':timedelta(days=10)
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1)
 }
 WSGI_APPLICATION = 'tweeter.wsgi.application'
+ASGI_APPLICATION = 'tweeter.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)]
+        },
+    }
+}
 
+# import dj_database_url
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'NAME': BASE_DIR / 'db.sqlite3'}
 }
 
 AUTH_USER_MODEL = 'user.User'
@@ -140,7 +160,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -152,16 +171,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+USE_S3 = os.environ.get('USE_S3') == 'True'
 
-USE_S3 = os.getenv('USE_S3') == 'True'
 if USE_S3:
     # aws settings
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
@@ -177,7 +195,6 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

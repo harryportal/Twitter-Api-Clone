@@ -18,9 +18,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postres
-      - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+
+volumes:
+  db:

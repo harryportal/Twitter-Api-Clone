@@ -3,6 +3,11 @@ from .models import Tweet
 from tweeter.utils import format_date_created
 from user.serializers import BaseUserSerializer
 from comments.serializers import CommentSerializer
+from PIL import Image
+
+
+def validate_image(image):
+    pass
 
 
 class CreateTweetSerializer(serializers.ModelSerializer):
@@ -13,8 +18,10 @@ class CreateTweetSerializer(serializers.ModelSerializer):
         """ ensures the user posts a least a picture or text when tweeting"""
         image = attrs.get('image')
         content = attrs.get('content')
+
         if not image and not content:
             raise serializers.ValidationError(detail='cannot post an empty tweet')
+
         return attrs
 
     def create(self, validated_data):

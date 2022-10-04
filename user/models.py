@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.db.models import Manager, Q
 
 
 class User(AbstractUser):
@@ -9,7 +10,7 @@ class User(AbstractUser):
     bio = models.TextField(max_length=500, null=True)
     profile_picture = models.ImageField(blank=True, null=True)
     cover_picture = models.ImageField(blank=True, null=True)
-    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_birth = models.DateField()
     phone = models.CharField(max_length=20, null=True)
     location = models.CharField(max_length=100,null=True)
     website = models.URLField(null=True)
